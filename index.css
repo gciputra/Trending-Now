@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Glory:wght@500;700&display=swap');
+
+
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    }
+    html,body{
+    height:100%;
+    }
+    .app{
+    background: -webkit-linear-gradient(to left, #2C5364, #203A43, #0F2027);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to left, #2C5364, #203A43, #0F2027);
+    height:100vh;
+    width:100%;
+    }
+    ul{
+    display:block;
+    width:100%;
+    height:inherit;
+    }
+    ul{
+    list-style-type:none;
+    }
+    li:nth-child(1)
+    {
+    position:absolute;
+    left:10%;
+    height:30px;
+    width:30px;
+    background:rgba(255,255,255,.2);
+    }
+    li:nth-child(2)
+    {
+    position:absolute;
+    left:30%;
+    height:45px;
+    width:45px;
+    background:rgba(255,255,255,.2);
+    }
+    li:nth-child(3)
+    {
+    position:absolute;
+    left:50%;
+    height:70px;
+    width:70px;
+    background:rgba(255,255,255,.2);
+    }
+    li:nth-child(4)
+    {
+    position:absolute;
+    left:80%;
+    height:20px;
+    width:20px;
+    background:rgba(255,255,255,.2);
+    }
+    li{
+    animation:animate 15s linear 1s infinite;
+    }
+
+    @keyframes animate{
+    from{
+        transform: translateY(+1500%) rotate(180deg)
+    }
+    to{
+        transform: translateY(-150%)
+        rotate(360deg)
+    }
+
+
+}
+
+th, td{
+    text-align: center;
+    font-family: fantasy, sans-serif;
+    font-weight: 200;
+    border-bottom: 1px solid #ddd;
+}
+
+
+tr:hover {background-color: #000606;}
+
+#standing{
+    color: rgb(246, 241, 241);
+    width: 100%;
+    
+}
+
+
+
+#heading{
+    font-weight: bold;
+    font-family: Glory, sans-serif;
+    text-align: center;
+    color:rgb(246, 241, 241);
+}
+
+h5{
+    color: white;
+}
+
+button{
+    color:#1DA1F2 ;
+    margin: 10px;
+}
+

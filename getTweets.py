@@ -1,0 +1,80 @@
+import re
+import requests
+import tweepy
+from textblob import TextBlob
+from tweepy import OAuthHandler
+import pyodide_http
+import json
+from config import twitter_access_token, twitter_access_token_secret, twitter_consumer_key, twitter_consumer_secret
+
+'''After importing the required dependencies, the patch_all() function is called early
+to patch the Requests library to function with the pyscript environment.
+More info on: https://docs.pyscript.net/latest/tutorials/requests.html'''
+pyodide_http.patch_all()
+
+#An object 'twitter_client' is constructed with web parsing methods and sentiment analysis functions
+class twitter_client():
+
+    def __init__(self):
+        consumer_key = twitter_consumer_key
+        consumer_secret = twitter_consumer_secret
+        access_token = twitter_access_token
+        access_token_secret = twitter_access_token_secret
+
+        #Attempts authentication whether the user-specific keys above are validated by Twitter servers.
+        try:
+            self.auth = OAuthHandler(consumer_key, consumer_secret)
+            self.auth.set_access_token(access_token, access_token_secret)
+            self.api = tweepy.API(self.auth)
+        except:
+            print("Error, Authentication Failed")
+
+    #Utility function to remove links and other special characters from tweet text to filter words into textblob
+    def filter_tweets(self, tweet):
+        return ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", tweet).split())
+
+
+
+    def sentiment_analyzer(self, tweet):
+        #receives TextBlob object with the filtered tweets passed into as argument
+        result = TextBlob(self.filter_tweets(tweet))
+        
+        #Filters unimportant words and sets sentiment from scale of -1.0 to 1.0
+        if result.sentiment.polarity >= 0:
+            return 'Positive'
+        elif result.sentiment.polarity < 0:
+            return 'Negative'
+
+    def get_tweets(self, query, count):
+        tweets = []
+        iterator = 0
+
+        #request method which concatenates the generic urls with headers and the query string from user input
+        url = "https://twitter135.p.rapidapi.com/v1.1/SearchTweets/"
+
+        querystring = {"q": query,"count": str(count),"result_type":"popular"}
+
+        headers = {
+	        "X-RapidAPI-Key": "74d9b29468mshaa836db5cfc9804p1e89b7jsn2e415de58653",
+	        "X-RapidAPI-Host": "twitter135.p.rapidapi.com"
+        }
+
+        response = requests.get(url, headers=headers, params=querystring)
+        data = json.loads(response.text)
+        iterator = 0
+        #iterates through all the tweet texts from the json data and sets sentiment for each
+        while iterator < len(data['statuses']):
+            parsed_tweet = {}
+            parsed_tweet['word'] = data['statuses'][iterator]["full_text"]
+            parsed_tweet['sentiment'] = self.sentiment_analyzer(data['statuses'][iterator]["full_text"])
+
+            #Filters unwanted retweets to ensure each tweet entry in list tweets is unique
+            if data['statuses'][iterator]['retweet_count'] > 0:
+                if parsed_tweet not in tweets:
+                    tweets.append(parsed_tweet)
+            else:
+                tweets.append(parsed_tweet)
+            iterator += 1
+        return tweets
+
+

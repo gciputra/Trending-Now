@@ -1,0 +1,77 @@
+
+<html>
+    <head>
+        <script src="./index.html"></script>
+        <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />  
+        <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+        <py-config>
+            packages = ["tweepy", "ssl", "textblob", "pyodide-http"]
+            [[fetch]]
+            files=["./getTweets.py"]
+        </py-config>
+        <title>Get Tweets</title>
+    </head>
+    <body>
+        <main class="app">
+            <div class="boxes">
+        <h3>Here's what Twitter thinks...</h3>
+        <p id="posPercent"></p>
+        <p id="negPercent"></p>
+        <br>
+        <br>
+        <div id="Positives">
+        <h5>Here are the positive tweets</h5>
+        <p id="posList"></p>
+        </div>
+        <div id="Negatives">
+        <h5>Here are the negative tweets</h5>
+        <p id="negList"></p>
+        </div>
+        
+            
+            <py-script>
+                import pyodide_http
+                from pyodide.ffi import create_proxy
+                from js import createObject, queryString
+                from getTweets import twitter_client
+                import json
+
+                createObject(create_proxy(globals()), "pyodideGlobals")
+                
+
+                def main(user_query):
+                    api = twitter_client()
+                    tweets = api.get_tweets(query = user_query, count = 100)
+                    pos_tweets = [tweet for tweet in tweets if tweet['sentiment'] == 'Positive']
+                    pos_tweets_percent = (len(pos_tweets)/len(tweets))*100
+                    neg_tweets = [tweet for tweet in tweets if tweet['sentiment'] == 'Negative']
+                    neg_tweets_percent = (len(neg_tweets)/len(tweets))*100
+                    
+                    neg_tweet_list = []
+                    pos_tweet_list = []
+                    for tweet in pos_tweets[:10]:
+                        pos_tweet_list.append(tweet['word'])
+                    for tweet in neg_tweets[:10]:
+                        neg_tweet_list.append(tweet['word'])
+                    
+                    return [pos_tweets_percent, pos_tweet_list, neg_tweets_percent, neg_tweet_list]
+                return_list = main(queryString)
+                Element('posPercent').element.innerText = "Positive tweets: " + str(return_list[0]) + "%"
+                Element('negPercent').element.innerText = "Negative tweets: " + str(return_list[2]) + "%"
+                for tweet in return_list[1]:
+                    Element('posList').element.innerHTML += tweet + "<br>" + "==========================================================" + "<br>"
+                for tweet in return_list[3]:
+                    Element('negList').element.innerHTML += tweet + "<br>" + "=========================================================="
+            </py-script>
+            <script>
+                function createObject(object, variableName){
+                    let execString = variableName + " = object"
+                    eval(execString)
+                };
+                var queryString = localStorage.getItem('team_name');
+
+            </script>
+            </div>
+    </body>
+
+</html>

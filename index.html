@@ -1,0 +1,106 @@
+
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        <link rel='stylesheet' href="index.css">
+
+        <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />  
+        <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+        
+        <title>Trending Now</title>
+    </head>
+
+    <body>
+        <main class="app">
+            <div class="boxes">
+            <div><h3 id="heading">Road to Champions of England</h3></div>
+            <div id='table' style="overflow-x:auto;"></div>
+            <button onclick="stringToHtml()"  class="py-button" name="userButton" id="tableLoader">
+                Load it up!
+            </button>
+            <py-config>
+                packages = ["tabulate", "requests", "ssl", "pyodide_http"]
+                [[fetch]]
+                files = ["./main.py"]
+            </py-config>
+            
+            <py-script >
+                from pyodide.ffi import create_proxy
+                from pyscript import Element
+                from main import create_array, json_viewer
+                import requests
+                import pyodide_http
+                from tabulate import tabulate
+                import ssl
+                from js import createObject
+
+                ctx = ssl.create_default_context()
+                ctx.check_hostname = False
+                ctx.verify_mode = ssl.CERT_NONE
+                createObject(create_proxy(globals()), "pyodideGlobals")
+                
+                pyodide_http.patch_all()
+                def web_search():
+                    url = "https://api-football-beta.p.rapidapi.com/standings"
+
+                    querystring = {"season":"2023","league":"39"}
+                
+                    headers = {
+                    "X-RapidAPI-Key": "74d9b29468mshaa836db5cfc9804p1e89b7jsn2e415de58653",
+                    "X-RapidAPI-Host": "api-football-beta.p.rapidapi.com"
+                    }
+                
+                    response = requests.get(url, headers=headers, params=querystring)
+                    
+                    return response
+
+                
+                html_table = tabulate(create_array(json_viewer(web_search())), tablefmt='html')
+            </py-script>
+              <ul>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+              </ul>
+            </div>
+            <div id="'form">
+
+            </div>
+            <script type="text/javascript">
+                function createObject(object, variableName){
+                    let execString = variableName + " = object"
+                    eval(execString)
+                };
+
+                function add_buttons(){
+                    $('table').attr('id', 'standing')
+                    $('#tableLoader').hide()
+                    var table = document.getElementById("standing");
+                    for (var i = 0, row; row = table.rows[i]; i++) {
+                        row.innerHTML += '<td><button target="true" class="w3-button">View Tweets</button></td>'
+                        $("button[target='true']").attr('id', String(i))
+                        $("button[target='true']").removeAttr("target")
+                    };
+                    var buttons = document.querySelectorAll("button[class='w3-button']")
+                    for (let i = 0; i < buttons.length; i++){
+                        buttons[i].addEventListener("click", function(){
+                            location.href = 'tweets.html'
+                            const query_team = document.getElementById('standing').rows[i].cells[1].innerHTML
+                            localStorage.setItem('team_name', query_team)
+                        });
+                    }
+                        
+                }
+                function stringToHtml(){
+                    const parser = new DOMParser();
+                    const billboard = parser.parseFromString(String(pyodideGlobals.get('html_table')), "text/html")
+                    document.getElementById('table').innerHTML += pyodideGlobals.get('html_table')
+                    add_buttons()
+                }
+            </script>
+            <h5>Proudly made by Gary Ciputra: gciputra@umich.edu</h5>
+        </main>
+    </body>
+    
+</html>
