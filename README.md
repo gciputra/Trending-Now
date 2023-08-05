@@ -2,9 +2,11 @@
 Adopting NLP text processing methods to analyze tweet sentiments on Premier League teams | Made with Pyscript and Javascript
 
 ### View the application demo [here]({link})
-![image](https://github.com/gciputra/Trending-Now/assets/140233515/061912af-d0ae-4286-9e1f-a8ff7a79727f)
 
 ### How to Run:
+Clone this repository and on the terminal, set up a local host server:
+```python -m http.server -b 127.0.0.1 8080```
+That's all!
 
 ### The idea
 Agueroooooo!!! The world of football is full of passion, drama and ice-cold criticism. As one of the most prominent social media platforms for virtually anyone to voice their opinions, the world of football and sports media in general has never been the same since the launch of Twitter. Trending Now serves as a simple-to-operate browser app available to use in Chrome, Internet Explorer, Bing, and many others to analyze tweet sentiments on premier league teams. As the project utilizes web-parsing under Rapid API, it is able to analyze the percentage of tweets that are positive and negative and displays samples of tweets for both. The machine learning module "TextBlob" boasts up to 68% accuracy in determining the sentiment polarity of each tweet. Ideas are always welcome to improve this model! 
