@@ -21,7 +21,7 @@
             <py-config>
                 packages = ["tabulate", "requests", "ssl", "pyodide_http"]
                 [[fetch]]
-                files = ["./main.py", "./keys.py]
+                files = ["./main.py", "./config.py"]
             </py-config>
             
             <py-script >
@@ -33,7 +33,7 @@
                 from tabulate import tabulate
                 import ssl
                 from js import createObject
-                import keys
+                import config
 
                 ctx = ssl.create_default_context()
                 ctx.check_hostname = False
@@ -47,7 +47,7 @@
                     querystring = {"season":"2023","league":"39"}
                 
                     headers = {
-                    "X-RapidAPI-Key": keys.Rapid_api_key,
+                    "X-RapidAPI-Key": config.Rapid_api_key,
                     "X-RapidAPI-Host": "api-football-beta.p.rapidapi.com"
                     }
                 
