@@ -33,6 +33,7 @@
                 from tabulate import tabulate
                 import ssl
                 from js import createObject
+                from keys import Rapid_api_key
 
                 ctx = ssl.create_default_context()
                 ctx.check_hostname = False
@@ -46,7 +47,7 @@
                     querystring = {"season":"2023","league":"39"}
                 
                     headers = {
-                    "X-RapidAPI-Key": "74d9b29468mshaa836db5cfc9804p1e89b7jsn2e415de58653",
+                    "X-RapidAPI-Key": Rapid_api_key,
                     "X-RapidAPI-Host": "api-football-beta.p.rapidapi.com"
                     }
                 
