@@ -5,7 +5,7 @@ from textblob import TextBlob
 from tweepy import OAuthHandler
 import pyodide_http
 import json
-from config import twitter_access_token, twitter_access_token_secret, twitter_consumer_key, twitter_consumer_secret
+from keys import Rapid_api_key, twitter_access_token, twitter_access_token_secret, twitter_consumer_key, twitter_consumer_secret
 
 '''After importing the required dependencies, the patch_all() function is called early
 to patch the Requests library to function with the pyscript environment.
@@ -55,7 +55,7 @@ class twitter_client():
         querystring = {"q": query,"count": str(count),"result_type":"popular"}
 
         headers = {
-	        "X-RapidAPI-Key": "74d9b29468mshaa836db5cfc9804p1e89b7jsn2e415de58653",
+	        "X-RapidAPI-Key": Rapid_api_key,
 	        "X-RapidAPI-Host": "twitter135.p.rapidapi.com"
         }
 
