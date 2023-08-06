@@ -5,7 +5,7 @@ from textblob import TextBlob
 from tweepy import OAuthHandler
 import pyodide_http
 import json
-from keys import Rapid_api_key, twitter_access_token, twitter_access_token_secret, twitter_consumer_key, twitter_consumer_secret
+import keys
 
 '''After importing the required dependencies, the patch_all() function is called early
 to patch the Requests library to function with the pyscript environment.
@@ -16,10 +16,10 @@ pyodide_http.patch_all()
 class twitter_client():
 
     def __init__(self):
-        consumer_key = twitter_consumer_key
-        consumer_secret = twitter_consumer_secret
-        access_token = twitter_access_token
-        access_token_secret = twitter_access_token_secret
+        consumer_key = keys.twitter_consumer_key
+        consumer_secret = keys.twitter_consumer_secret
+        access_token = keys.twitter_access_token
+        access_token_secret = keys.twitter_access_token_secret
 
         #Attempts authentication whether the user-specific keys above are validated by Twitter servers.
         try:
@@ -55,7 +55,7 @@ class twitter_client():
         querystring = {"q": query,"count": str(count),"result_type":"popular"}
 
         headers = {
-	        "X-RapidAPI-Key": Rapid_api_key,
+	        "X-RapidAPI-Key": keys.Rapid_api_key,
 	        "X-RapidAPI-Host": "twitter135.p.rapidapi.com"
         }
 
