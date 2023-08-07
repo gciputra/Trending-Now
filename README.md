@@ -36,7 +36,6 @@ Flow of code:
 1. getTweets.py constructs a twitter_client python object and defines several object functions such as filter_tweets, sentiment_analyzer, and get_tweets.
 2. As the twitter_client object is imported to Javascript, the "main" function on tweets.html creates an instance of twitter_client named "Client" which is asked to communicate with the twitter api to utilize its query function to search for relevant tweets. The query string is the team name which is taken from the local storage stored by index.html.
 3. After the query, the twitter api sends several responses containing text data of the tweet and some metadata but we are only interested in the text. Afterwards the filter_tweets function ensures that links and special characters are removed from the text.
-4.    
 
 ### For Future Use
 Note: This web app model is highly susceptible to syntax changes. 
