@@ -4,7 +4,7 @@ Adopting NLP text processing methods to analyze tweet sentiments on Premier Leag
 ### View the application demo [here](https://drive.google.com/file/d/1OBxnusYtSITpMGdLVJyX5FmUN2liKcvC/view?usp=sharing)
 
 ### How to Run:
-Test it out here: [chrome]https://gciputra.github.io/Trending-Now/ OR
+Test it out here: [chrome](https://gciputra.github.io/Trending-Now/) OR
 Clone this repository and on the terminal, set up a local host server:
 ```python -m http.server -b 127.0.0.1 8080```
 That's all!
@@ -21,16 +21,18 @@ Agueroooooo!!! The world of football is full of passion, drama and ice-cold crit
 
 ### How the code works:
 Intro to Pyscript: Pyscript is a very Alpha python framework which eases integrating python scripts and logic into html files while also providing the capabilities of exchanging objects between python and javascript such as objects, functions, or variables. As the project's backend logic is predominantly written under python, I utilized this python framework to take advantage of exchanging data quickly and easily between the front-end and back-end. 
-Flow of code:\
+Flow of code:
 
-**Index.html and main.py**\
+**Index.html and main.py**
 1. The file contains a mixture of Javascript in <scripts> and Pyscript in <py-script>, Py-script is mainly used for handling logic and recieving imported variables and functions from pure back-end python files while Javascript handles displaying information in HTML format. When the browser initially renders the page, pyscript is compiled first, then Javascript.
 2. The py-script code first defines an object "pyodide globals" to allow exchange of objects and functions between python and javascript. It then tries to avoid SSL error with the browser by importing the SSL library.
 3. Then, the web_search function is called which works by using the GET method from the Requests library to encode the url, required headers and parameters correctly to request a response from the Rapid Football API. The response variable mainly serves as a file handle and is not readible at the moment. Thus, the json.loads function is called to parse the text received from the API into convenient json structure.
 4. The create_array function is imported from the main.py file to navigate through the JSON structure and identify the team name, form, points, and rank data and returns a list. The tabulate library then involves converting the list of data into tables with HTML format and syntax. The html_table variable then stores this HTML format and is passed towards the Javascript section.
 5. Upon pressing the button "load it up", two JS functions are called: "stringToHtml" and "add_buttons". stringToHtml recieves the html_table variable from pyscript and converts the data type from string to html. Then the table is written on the "table" div. add_buttons sets the id of the newly displayed table as "standing" and therefore Javascript is able to iterate through each table row and display a button.
-6. Each button in each row of the table is looped through once again and given a unique id from 0 to 49 (as there are 50 rows). As a button is clicked, the program navigates through the row of that specific button and stores the team name in the local storage of the browser.\\
-**tweets.html and getTweets.py**\
+6. Each button in each row of the table is looped through once again and given a unique id from 0 to 49 (as there are 50 rows). As a button is clicked, the program navigates through the row of that specific button and stores the team name in the local storage of the browser.
+
+
+**tweets.html and getTweets.py**
 1. getTweets.py constructs a twitter_client python object and defines several object functions such as filter_tweets, sentiment_analyzer, and get_tweets.
 2. As the twitter_client object is imported to Javascript, the "main" function on tweets.html creates an instance of twitter_client named "Client" which is asked to communicate with the twitter api to utilize its query function to search for relevant tweets. The query string is the team name which is taken from the local storage stored by index.html.
 3. After the query, the twitter api sends several responses containing text data of the tweet and some metadata but we are only interested in the text. Afterwards the filter_tweets function ensures that links and special characters are removed from the text.
