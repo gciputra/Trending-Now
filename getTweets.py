@@ -63,13 +63,13 @@ class twitter_client():
         data = json.loads(response.text)
         iterator = 0
         #iterates through all the tweet texts from the json data and sets sentiment for each
-        while iterator < len(data['results']):
+        while iterator < len(data["results"]):
             parsed_tweet = {}
-            parsed_tweet['word'] = data['results'][iterator]["text"]
-            parsed_tweet['sentiment'] = self.sentiment_analyzer(data['results'][iterator]["text"])
+            parsed_tweet['word'] = data["results"][iterator]["text"]
+            parsed_tweet['sentiment'] = self.sentiment_analyzer(data["results"][iterator]["text"])
 
             #Filters unwanted retweets to ensure each tweet entry in list tweets is unique
-            if data['results'][iterator]['retweet_count'] > 0:
+            if data["results"][iterator]["retweet_count"] > 0:
                 if parsed_tweet not in tweets:
                     tweets.append(parsed_tweet)
             else:
