@@ -50,7 +50,7 @@ class twitter_client():
         iterator = 0
 
         #request method which concatenates the generic urls with headers and the query string from user input
-        url = "https://twitter154.p.rapidapi.com/v1.1/SearchTweets/"
+        url = "https://twitter154.p.rapidapi.com/search/search/continuation"
 
         querystring = {"query": query,"continuation_token": config.continuation_token,"limit": str(count),"section":"top"}
 
