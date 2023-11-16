@@ -45,31 +45,31 @@ class twitter_client():
         elif result.sentiment.polarity < 0:
             return 'Negative'
 
-    def get_tweets(self, query, count):
+    def get_tweets(self, query, continuation_token,count):
         tweets = []
         iterator = 0
 
         #request method which concatenates the generic urls with headers and the query string from user input
-        url = "https://twitter135.p.rapidapi.com/v1.1/SearchTweets/"
+        url = "https://twitter154.p.rapidapi.com/v1.1/SearchTweets/"
 
-        querystring = {"q": query,"count": str(count),"result_type":"popular"}
+        querystring = {"query": query,"continuation_token": config.continuation_token,"limit": str(count),"section":"top"}
 
         headers = {
 	        "X-RapidAPI-Key": config.Rapid_api_key,
-	        "X-RapidAPI-Host": "twitter135.p.rapidapi.com"
+	        "X-RapidAPI-Host": "twitter154.p.rapidapi.com"
         }
 
         response = requests.get(url, headers=headers, params=querystring)
         data = json.loads(response.text)
         iterator = 0
         #iterates through all the tweet texts from the json data and sets sentiment for each
-        while iterator < len(data['statuses']):
+        while iterator < len(data['results']):
             parsed_tweet = {}
-            parsed_tweet['word'] = data['statuses'][iterator]["full_text"]
-            parsed_tweet['sentiment'] = self.sentiment_analyzer(data['statuses'][iterator]["full_text"])
+            parsed_tweet['word'] = data['results'][iterator]["text"]
+            parsed_tweet['sentiment'] = self.sentiment_analyzer(data['results'][iterator]["text"])
 
             #Filters unwanted retweets to ensure each tweet entry in list tweets is unique
-            if data['statuses'][iterator]['retweet_count'] > 0:
+            if data['results'][iterator]['retweet_count'] > 0:
                 if parsed_tweet not in tweets:
                     tweets.append(parsed_tweet)
             else:
