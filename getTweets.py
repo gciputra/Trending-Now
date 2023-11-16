@@ -45,7 +45,7 @@ class twitter_client():
         elif result.sentiment.polarity < 0:
             return 'Negative'
 
-    def get_tweets(self, query, continuation_token,count):
+    def get_tweets(self, query, count):
         tweets = []
         iterator = 0
 
